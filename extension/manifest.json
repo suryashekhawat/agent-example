@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "WebSocket Sidebar Extension",
+  "version": "1.0",
+  "permissions": ["tabs", "scripting"],
+  "host_permissions": ["http://localhost:8000/"],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; connect-src 'self' ws://localhost:8000"
+  },
+  "action": {
+    "default_title": "WebSocket Sidebar"
+  }
+}
