@@ -1,16 +1,17 @@
 {
   "manifest_version": 3,
-  "name": "WebSocket Sidebar Extension",
+  "name": "YOLOv8 Detector",
   "version": "1.0",
-  "permissions": ["tabs", "scripting"],
-  "host_permissions": ["http://localhost:8000/"],
-  "side_panel": {
-    "default_path": "sidepanel.html"
+  "description": "Detect UI components using YOLOv8.",
+  "permissions": ["activeTab", "scripting", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
   },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; connect-src 'self' ws://localhost:8000"
-  },
-  "action": {
-    "default_title": "WebSocket Sidebar"
-  }
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
 }
