@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import SidePanel from "@/components/SidePanel";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useThemeStore } from '@/store/themeStore';
+import { StreamProvider } from "@/StreamProvider";
+import { EventList } from "@/components/EventList";
 function App() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const theme = useThemeStore((state) => state.theme);
@@ -18,6 +20,8 @@ function App() {
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-900 text-black dark:text-white p-4 relative">
       {/* Header */}
+      <StreamProvider />
+      <EventList />
       <header className="flex justify-between items-center mb-4">
         <ThemeToggle />
       </header>
