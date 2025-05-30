@@ -1,4 +1,4 @@
-import ChatInterface from "./ChatInterface";
+import ChatInterface from "@/components/ChatInterface";
 import { themeClasses, getThemeVariant } from "@/utils/theme";
 
 interface SidePanelProps {
