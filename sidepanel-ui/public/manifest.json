@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "AI Element Identification Tool",
+    "version": "1.0",
+    "description": "Detect UI components using AI.",
+    "permissions": ["activeTab", "scripting", "tabs","sidePanel"],
+    "host_permissions": ["<all_urls>"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+      }
+    ],
+    "side_panel": {
+      "default_path": "index.html",
+      "enabled": true
+    }
+  }
+  
