@@ -1,6 +1,6 @@
 chrome.runtime.onInstalled.addListener(() => {
     chrome.sidePanel.setOptions({
-      path: "dist/index.html",
+      path: "index.html",
       enabled: true
     });
   });

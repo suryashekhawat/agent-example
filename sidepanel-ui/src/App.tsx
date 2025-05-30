@@ -1,13 +1,9 @@
 import { useState } from "react";
-import viteLogo from "/vite.svg";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
 
 import SidePanel from "@/components/SidePanel";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   return (
