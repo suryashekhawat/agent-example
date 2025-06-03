@@ -6,7 +6,7 @@ import cv2
 model = YOLO("runs/detect/custom-yolov8-model2/weights/best.pt")
 
 # Run inference with very low confidence threshold
-results = model("model/datasets/images/image-1.png", conf=0.01)
+results = model("cnn/datasets/images/image-1.png", conf=0.01)
 
 # Check how many boxes were detected
 print(f"Boxes detected: {len(results[0].boxes)}")

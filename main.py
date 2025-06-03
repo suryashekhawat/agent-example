@@ -4,9 +4,8 @@ import uvicorn
 from fastapi import FastAPI, WebSocketDisconnect, WebSocket
 from google.adk.cli.fast_api import get_fast_api_app
 from fastapi.middleware.cors import CORSMiddleware
-from models.events import Event, ChatEvent, NotificationEvent, SystemEvent, UserEvent
+from models.events import Event
 from pydantic import TypeAdapter, ValidationError
-from models.events import Event, ChatEvent, NotificationEvent, SystemEvent, UserEvent
 from events.handlers import (
     handle_chat_event,
     handle_notification_event,
@@ -16,10 +15,10 @@ from events.handlers import (
 
 event_adapter = TypeAdapter(Event)
 EVENT_HANDLERS = {
-    'chat': handle_chat_event,
-    'notification': handle_notification_event,
-    'system': handle_system_event,
-    'user': handle_user_event,
+    "chat": handle_chat_event,
+    "notification": handle_notification_event,
+    "system": handle_system_event,
+    "user": handle_user_event,
 }
 
 AGENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -41,6 +40,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/")
 async def health_check():
@@ -70,6 +70,7 @@ async def websocket_endpoint(websocket: WebSocket):
     except Exception as e:
         print(f"WebSocket error: {e}")
         await websocket.close(code=1011)
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
