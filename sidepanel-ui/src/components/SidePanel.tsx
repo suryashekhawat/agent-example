@@ -2,13 +2,9 @@ import ChatInterface from "@/components/ChatInterface";
 import { themeClasses, getThemeVariant } from "@/utils/theme";
 
 interface SidePanelProps {
-  isOpen: boolean;
-  onClose: () => void;
 }
 
-const SidePanel: React.FC<SidePanelProps> = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
-
+const SidePanel: React.FC<SidePanelProps> = ({ }) => {
   const variant = getThemeVariant();
 
   return (
@@ -17,7 +13,6 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, onClose }) => {
     >
       <div className={`flex justify-between items-center p-4 border-b ${themeClasses.panel[variant]}`}>
         <h2 className="text-lg font-bold">AI Assistant</h2>
-        <button onClick={onClose} className="text-xl">×</button>
       </div>
       <ChatInterface />
     </div>
