@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "agent-example"
+version = "0.1.0"
+description = ""
+authors = ["Surya <85492089+surya-apty@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+google-adk = "^1.1.1"
+litellm = "^1.72.0"
+fastapi = "^0.115.12"
+pillow = "^11.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
