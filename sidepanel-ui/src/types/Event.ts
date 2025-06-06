@@ -1,5 +1,5 @@
 // types/Event.ts
-export type BaseEventType = 'chat' | 'notification' | 'system' | 'user' | 'extension';
+export type BaseEventType = 'chat' | 'notification' | 'system' | 'user' | 'extension' | 'mousemove' | 'click';
 export type DefaultEvent = ChatEvent | NotificationEvent | SystemEvent | UserEvent | ExtensionEvent;
 
 export interface BaseEvent {
@@ -9,7 +9,13 @@ export interface BaseEvent {
     payload: unknown;
 }
 
-
+export interface MouseEventData extends BaseEvent {
+    type: 'mousemove' | 'click';
+    x: number;
+    y: number;
+    timestamp: number;
+    element?: string; // Optional for click events
+}
 export interface ChatEvent extends BaseEvent {
     type: 'chat';
     payload: {

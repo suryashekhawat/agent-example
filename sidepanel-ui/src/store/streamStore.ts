@@ -1,6 +1,6 @@
 // store/streamStore.ts
 import { create } from 'zustand';
-import { BaseEvent } from '@/types/Event';
+import { BaseEvent, MouseEventData } from '@/types/Event';
 type PageData = {
     url: string | null;
     title: string | null;
@@ -21,8 +21,11 @@ type PageData = {
 interface StreamStore {
     page: PageData;
     events: BaseEvent[];
+    mouseEvents: any[]; // Add mouseEvents array to store mouse events
     addEvent: (event: BaseEvent) => void;
 }
+
+
 
 // Create the Zustand store
 export const useStreamStore = create<StreamStore>((set) => ({
@@ -33,17 +36,23 @@ export const useStreamStore = create<StreamStore>((set) => ({
         screenshotImageBase64: null,
     },
     events: [],
+    mouseEvents: [], // Add mouseEvents array to store mouse events
     addEvent: (event) =>
         set((state) => ({
             events: [...state.events, event],
         })),
+    addMouseEvent: (mouseEvent: MouseEventData) =>
+        set((state) => ({
+            events: [...state.events, mouseEvent as BaseEvent],
+        })), // Add method to add mouse events
+    clearMouseEvents: () => set({ events: [] }), // Add method to clear mouse events
     clearEvents: () => set({ events: [] }),
     removeEvent: (id: string) =>
         set((state) => ({
             events: state.events.filter((e) => e.id !== id),
         })),
-}));
 
+}));
 
 // Subscribe to state changes and log them
 useStreamStore.subscribe((state) => {

@@ -1,10 +1,6 @@
 // content.js
 import { useStreamStore } from '@/store/streamStore';
 
-type ElementData = Element & {
-  innerText: string;
-}
-
 function getElementsData() {
   const elements: NodeListOf<Element> = document.querySelectorAll("*");
   return Array.from(elements)
@@ -21,9 +17,22 @@ function getElementsData() {
     })
     .map(el => {
       const rect = el.getBoundingClientRect();
+      const computedStyle = getComputedStyle(el); // Get computed styles
+      const styleArray = Array.from(computedStyle).map(property => ({
+        property,
+        value: computedStyle.getPropertyValue(property),
+      }));
       return {
         tag: el.tagName,
         className: el.className,
+        id: (el as HTMLElement).id || null,
+        dataAttributes: Array.from(el.attributes)
+          .filter(attr => attr.name.startsWith('data-'))
+          .reduce((acc, attr) => {
+            acc[attr.name] = attr.value;
+            return acc;
+          }, {} as Record<string, string>),
+        style: styleArray,
         text: (el as HTMLElement).innerText,
         boundingBox: {
           x: rect.left,
@@ -35,6 +44,38 @@ function getElementsData() {
     });
 }
 
+
+// Track mouse position and click events
+function trackMouseAndClicks() {
+  document.addEventListener('mousemove', (event) => {
+    const mousePosition = {
+      type: 'mousemove',
+      x: event.clientX,
+      y: event.clientY,
+      timestamp: Date.now(),
+    };
+
+    // Update the Zustand store with the mouse position
+    useStreamStore.setState(state => ({
+      mouseEvents: [...state.mouseEvents, mousePosition],
+    }));
+  });
+
+  document.addEventListener('click', (event) => {
+    const clickEvent = {
+      type: 'click',
+      x: event.clientX,
+      y: event.clientY,
+      element: (event.target as HTMLElement).tagName, // Element clicked
+      timestamp: Date.now(),
+    };
+
+    // Update the Zustand store with the click event
+    useStreamStore.setState(state => ({
+      mouseEvents: [...state.mouseEvents, clickEvent],
+    }));
+  });
+}
 async function updatePageData() {
   const boundingBoxes = getElementsData();
   const screenshotImageBase64 = await captureScreenshot();
@@ -43,6 +84,7 @@ async function updatePageData() {
     title: document.title,
     boundingBoxes,
     screenshotImageBase64,
+    mouseEvents: useStreamStore.getState().mouseEvents,
   };
 
   // Update the Zustand store
@@ -61,6 +103,9 @@ async function captureScreenshot(): Promise<string | null> {
     });
   });
 }
+
+// Initialize mouse tracking
+trackMouseAndClicks();
 
 // Update the page data in the store
 setInterval(updatePageData, 5000); // Update every 5 seconds
