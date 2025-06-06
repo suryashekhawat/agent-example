@@ -1,3 +1,6 @@
 venv/
 
 *.env
+
+cnn/datasets/data_images/*
+cnn/datasets/ai-*

@@ -10,6 +10,7 @@ python = ">=3.9,<4.0"
 google-adk = "^1.1.1"
 litellm = "^1.72.0"
 fastapi = "^0.115.12"
+pillow = "^11.2.1"
 
 
 [build-system]

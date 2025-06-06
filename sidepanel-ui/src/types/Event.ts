@@ -1,6 +1,6 @@
 // types/Event.ts
-export type BaseEventType = 'chat' | 'notification' | 'system' | 'user';
-export type Event = ChatEvent | NotificationEvent | SystemEvent | UserEvent;
+export type BaseEventType = 'chat' | 'notification' | 'system' | 'user' | 'extension';
+export type DefaultEvent = ChatEvent | NotificationEvent | SystemEvent | UserEvent | ExtensionEvent;
 
 export interface BaseEvent {
     id: string;
@@ -42,5 +42,13 @@ export interface UserEvent extends BaseEvent {
     payload: {
         action: string;
         metadata?: Record<string, any>;
+    };
+}
+
+export interface ExtensionEvent extends BaseEvent {
+    type: 'extension';
+    payload: {
+        extensionId: string;
+        data: Record<string, any>;
     };
 }

@@ -50,7 +50,7 @@ async def health_check():
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    await websocket.send_text("WebSocket connection established")
+    await websocket.send_json("WebSocket connection established")
 
     try:
         while True:

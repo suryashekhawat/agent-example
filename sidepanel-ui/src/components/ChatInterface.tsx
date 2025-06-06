@@ -8,52 +8,19 @@ interface ChatPayload {
   conversationId?: string;
 }
 
-interface BaseEvent {
-  id: string;
-  type: "chat" | "notification" | "system" | "user";
-  timestamp: number;
-  payload: any;
-}
-
 const ChatInterface = () => {
   const [messages, setMessages] = useState<ChatPayload[]>([
     { sender: "bot", message: "Ask me anything." },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
 
   const variant = getThemeVariant();
-
+  
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws"); // Use secure ws:// or wss:// in prod
-
-    ws.onopen = () => {
-      console.log("WebSocket connected");
-    };
-
-    ws.onmessage = (event) => {
-      const data: BaseEvent = JSON.parse(event.data);
-      if (data.type === "chat") {
-        const { message, sender } = data.payload;
-        setMessages((prev) => [...prev, { sender, message }]);
-      } else if (data.type === "system") {
-        // Handle system events like typing...
-        console.log("System event:", data.payload);
-      }
-    };
-
-    ws.onerror = (e) => {
-      console.error("WebSocket error:", e);
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket disconnected");
-    };
-
-    wsRef.current = ws;
-
-    return () => ws.close();
+    
   }, []);
 
   const sendMessage = () => {
@@ -84,13 +51,15 @@ const ChatInterface = () => {
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={`p-2 rounded-lg max-w-xs whitespace-pre-wrap ${
-              themeClasses.bubble[msg.sender === "user" ? "user" : "assistant"][variant]
-            } ${msg.sender === "user" ? "self-end" : "self-start"}`}
+            className={`p-2 rounded-lg max-w-xs whitespace-pre-wrap ${themeClasses.bubble[msg.sender === "user" ? "user" : "assistant"][variant]
+              } ${msg.sender === "user" ? "self-end" : "self-start"}`}
           >
             {msg.message}
           </div>
         ))}
+        {isTyping && (
+          <div className="text-sm text-gray-500 dark:text-gray-400">Bot is typing...</div>
+        )}
       </div>
       <div className="sticky bottom-0 bg-white dark:bg-gray-900 px-4 py-2 flex items-center border-t border-gray-300 dark:border-gray-700">
         <input
