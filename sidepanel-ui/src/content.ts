@@ -1,5 +1,6 @@
 // content.js
 import { useStreamStore } from '@/store/streamStore';
+import AppConfig from './config/config';
 
 function getElementsData() {
   const elements: NodeListOf<Element> = document.querySelectorAll("*");
@@ -105,7 +106,7 @@ async function captureScreenshot(): Promise<string | null> {
 }
 
 // Initialize mouse tracking
-trackMouseAndClicks();
+// trackMouseAndClicks();
 
 // Update the page data in the store
-setInterval(updatePageData, 5000); // Update every 5 seconds
+setInterval(updatePageData, AppConfig.updatePageDuration); // Update every 5 seconds

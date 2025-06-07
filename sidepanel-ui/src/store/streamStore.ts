@@ -1,6 +1,8 @@
 // store/streamStore.ts
 import { create } from 'zustand';
 import { BaseEvent, MouseEventData } from '@/types/Event';
+import AppConfig from '@/config/config';
+import { websocketService } from '@/websocket/service';
 type PageData = {
     url: string | null;
     title: string | null;
@@ -56,5 +58,12 @@ export const useStreamStore = create<StreamStore>((set) => ({
 
 // Subscribe to state changes and log them
 useStreamStore.subscribe((state) => {
-    console.log('StreamStore state updated:', state);
+    console.log('StreamStore state changed:', state);
+    websocketService.connect(AppConfig.WebSocket.url);
+    websocketService.sendMessage({
+        type: 'streamStateUpdate',
+        payload: state,
+        timestamp: Date.now(),
+        id: 'streamStateUpdate-' + Date.now(),
+    });
 });

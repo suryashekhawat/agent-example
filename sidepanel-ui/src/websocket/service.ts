@@ -1,6 +1,4 @@
-import { useStreamStore } from '@/store/streamStore';
-import { BaseEventType, DefaultEvent } from '@/types/Event';
-import { WebSocketEvent } from '@/types/Websocket';
+import { DefaultEvent } from '@/types/Event';
 
 
 
@@ -16,17 +14,7 @@ class WebSocketService {
       console.log('WebSocket connected main');
     };
 
-    this.ws.onmessage = (event: MessageEvent): void => {
-      const data: WebSocketEvent = JSON.parse(event.data);
-
-      // Validate/parse the event and add it to the store
-      useStreamStore.getState().addEvent({
-        id: data.id,
-        type: data.type as BaseEventType,
-        timestamp: Date.now(),
-        payload: data.payload,
-      });
-    };
+    this.ws.onmessage = (event): void => {};
 
     this.ws.onerror = (e: Event): void => {
       console.error('WebSocket error:', e);
@@ -37,13 +25,9 @@ class WebSocketService {
       this.ws = null; // Reset the connection
     };
   }
-  onopen(): void {
-  
-  }
+  onopen(): void {}
 
-  onmessage(event: MessageEvent): void {
-  
-  }
+  onmessage(event: MessageEvent): void {}
   sendMessage(message: DefaultEvent): void {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify(message));

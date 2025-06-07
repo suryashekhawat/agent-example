@@ -1,9 +1,9 @@
 // types/Event.ts
-export type BaseEventType = 'chat' | 'notification' | 'system' | 'user' | 'extension' | 'mousemove' | 'click';
-export type DefaultEvent = ChatEvent | NotificationEvent | SystemEvent | UserEvent | ExtensionEvent;
+export type BaseEventType = 'chat' | 'notification' | 'system' | 'user' | 'extension' | 'mousemove' | 'click' | 'streamStateUpdate';
+export type DefaultEvent = ChatEvent | NotificationEvent | SystemEvent | UserEvent | ExtensionEvent | StreamStateUpdateEvent;
 
 export interface BaseEvent {
-    id: string;
+    id?: string;
     type: BaseEventType;
     timestamp: number;
     payload: unknown;
@@ -57,4 +57,10 @@ export interface ExtensionEvent extends BaseEvent {
         extensionId: string;
         data: Record<string, any>;
     };
+}
+
+
+interface StreamStateUpdateEvent extends BaseEvent {
+    type: 'streamStateUpdate';
+    payload: any; // Adjust the payload type as needed
 }
