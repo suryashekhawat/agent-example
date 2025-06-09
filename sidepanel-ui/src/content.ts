@@ -109,4 +109,4 @@ async function captureScreenshot(): Promise<string | null> {
 // trackMouseAndClicks();
 
 // Update the page data in the store
-setInterval(updatePageData, AppConfig.updatePageDuration); // Update every 5 seconds
+// setInterval(updatePageData, AppConfig.updatePageDuration); // Update every 5 seconds

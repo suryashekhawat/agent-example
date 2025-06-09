@@ -1,6 +1,6 @@
 // types/Event.ts
-export type BaseEventType = 'chat' | 'notification' | 'system' | 'user' | 'extension' | 'mousemove' | 'click' | 'streamStateUpdate';
-export type DefaultEvent = ChatEvent | NotificationEvent | SystemEvent | UserEvent | ExtensionEvent | StreamStateUpdateEvent;
+export type BaseEventType = 'chat' | 'notification' | 'system' | 'user' | 'extension' | 'mousemove' | 'click' | 'streamStateUpdate' | 'ping' | 'pong';
+export type DefaultEvent = ChatEvent | NotificationEvent | SystemEvent | UserEvent | ExtensionEvent | StreamStateUpdateEvent | PingEvent | PongEvent;
 
 export interface BaseEvent {
     id?: string;
@@ -63,4 +63,17 @@ export interface ExtensionEvent extends BaseEvent {
 interface StreamStateUpdateEvent extends BaseEvent {
     type: 'streamStateUpdate';
     payload: any; // Adjust the payload type as needed
+}
+
+interface PingEvent extends BaseEvent {
+    type: 'ping';
+    payload: {
+        message: string;
+    };
+}
+interface PongEvent extends BaseEvent {
+    type: 'pong';
+    payload: {
+        message: string;
+    };
 }

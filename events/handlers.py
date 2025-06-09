@@ -1,5 +1,6 @@
 from fastapi import WebSocket
-from models.events import ChatEvent, NotificationEvent, SystemEvent, UserEvent
+from datetime import datetime
+from models.events import ChatEvent, NotificationEvent, SystemEvent, UserEvent, PingEvent
 
 async def handle_chat_event(ws: WebSocket, event: ChatEvent):
     print(f"[Chat] {event.payload.sender}: {event.payload.message}")
@@ -16,3 +17,13 @@ async def handle_system_event(ws: WebSocket, event: SystemEvent):
 async def handle_user_event(ws: WebSocket, event: UserEvent):
     print(f"[User Action] {event.payload.action}")
     await ws.send_text(f"User action received: {event.payload.action}")
+
+async def handle_ping_event(ws: WebSocket, event: PingEvent):
+    print(f"[Ping] {event.payload}")
+    pong_event = {
+        "id": event.id,
+        "type": "pong",
+        "timestamp": "",
+        "payload": None
+    }
+    await ws.send_json(pong_event)

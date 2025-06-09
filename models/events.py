@@ -1,10 +1,10 @@
-from typing import Literal, Union, Optional, Any
-from pydantic import BaseModel
+from typing import Annotated, Literal, Union, Optional, Any
+from pydantic import BaseModel, Field
 
 
 class BaseEvent(BaseModel):
     id: str
-    type: Literal['chat', 'notification', 'system', 'user']
+    type: Literal['chat', 'notification', 'system', 'user', 'ping']
     timestamp: int
     payload: dict
 
@@ -29,6 +29,8 @@ class UserPayload(BaseModel):
     action: str
     metadata: Optional[dict[str, Any]]
 
+class PongPayload(BaseModel):
+    status: Literal["ok"] = "ok"
 
 # Union of all event types
 class ChatEvent(BaseEvent):
@@ -47,4 +49,17 @@ class UserEvent(BaseEvent):
     type: Literal['user']
     payload: UserPayload
 
-Event = Union[ChatEvent, NotificationEvent, SystemEvent, UserEvent]
+class PingEvent(BaseEvent):
+    type: Literal['ping']
+    payload: None  # No payload for ping events
+
+
+
+class PongEvent(BaseModel):
+    type: Literal["pong"]
+    payload: PongPayload
+
+Event = Annotated[
+    Union[ChatEvent, NotificationEvent, SystemEvent, UserEvent, PingEvent],
+    Field(discriminator='type')
+]

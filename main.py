@@ -1,6 +1,4 @@
 import os
-
-import uvicorn
 from fastapi import FastAPI, WebSocketDisconnect, WebSocket
 from google.adk.cli.fast_api import get_fast_api_app
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,6 +9,7 @@ from events.handlers import (
     handle_notification_event,
     handle_system_event,
     handle_user_event,
+    handle_ping_event,
 )
 
 event_adapter = TypeAdapter(Event)
@@ -19,6 +18,7 @@ EVENT_HANDLERS = {
     "notification": handle_notification_event,
     "system": handle_system_event,
     "user": handle_user_event,
+    "ping": handle_ping_event,
 }
 
 AGENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -50,15 +50,14 @@ async def health_check():
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    await websocket.send_json("WebSocket connection established")
+    await websocket.send_json("WebSocket connection established!!")
 
     try:
         while True:
             data = await websocket.receive_json()
-
             try:
                 event = event_adapter.validate_python(data)
-                print(f"Received event: {event}")
+                print(f"event: {event}")
                 handler = EVENT_HANDLERS.get(event.type)
                 if handler:
                     await handler(websocket, event)
@@ -72,5 +71,3 @@ async def websocket_endpoint(websocket: WebSocket):
         await websocket.close(code=1011)
 
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

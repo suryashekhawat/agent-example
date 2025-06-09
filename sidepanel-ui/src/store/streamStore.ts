@@ -59,11 +59,5 @@ export const useStreamStore = create<StreamStore>((set) => ({
 // Subscribe to state changes and log them
 useStreamStore.subscribe((state) => {
     console.log('StreamStore state changed:', state);
-    websocketService.connect(AppConfig.WebSocket.url);
-    websocketService.sendMessage({
-        type: 'streamStateUpdate',
-        payload: state,
-        timestamp: Date.now(),
-        id: 'streamStateUpdate-' + Date.now(),
-    });
+    
 });
