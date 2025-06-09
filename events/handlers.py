@@ -19,7 +19,7 @@ async def handle_user_event(ws: WebSocket, event: UserEvent):
     await ws.send_text(f"User action received: {event.payload.action}")
 
 async def handle_ping_event(ws: WebSocket, event: PingEvent):
-    print(f"[Ping] {event.payload}")
+    print("[Ping] Ping received, responding with Pong")
     pong_event = {
         "id": event.id,
         "type": "pong",
